@@ -10,14 +10,14 @@ namespace VR_Surgery.Scripts.Movement
         private CharacterController playerController;
         private Vector3 playerVelocity;
 
-        public Transform pointOfPlayer;
+        //public Transform pointOfPlayer;
 
         public float speed;
         public float maxSpeed = 30f;
         public float initialSpeed = 5f;
         public float run = 5f;
         public float timeCount;
-
+        float rotationSpeed = 100f;
         private bool in_Grounded;
         public float gravity = -9.8f;
         public float jumpHeight = 3f;
@@ -35,7 +35,7 @@ namespace VR_Surgery.Scripts.Movement
             //Debug.Log(playerVelocity.y);
 
         }
-        public void PlayerMovement(Vector2 input)
+        public void PlayerMovement(Vector2 input, Vector2 rotation)
         {
 
             Vector3 moveDirection = Vector3.zero;
@@ -64,14 +64,9 @@ namespace VR_Surgery.Scripts.Movement
                 timeCount = 0f;
             }
 
-
-
-            //playerController.Move(input * speed * Time.deltaTime);
             playerController.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
-            //Debug.Log(gameObject.transform.position);
-            //MixedRealityPlayspace.Transform.position = gameObject.transform.position;
-            pointOfPlayer.position = new Vector3(gameObject.transform.localPosition.x, pointOfPlayer.localPosition.y, gameObject.transform.localPosition.z);
-
+            float rotationAmount = rotation.x * rotationSpeed * Time.deltaTime;
+            playerController.transform.Rotate(Vector3.up, rotationAmount);
         }
 
     }
