@@ -1278,7 +1278,9 @@ MonoBehaviour:
   descriptionVoice: {fileID: 0}
   playVoiceBool: 0
   getVector2: {x: 0, y: 0}
+  DIR: {x: 0, y: 0}
   Player: {fileID: 185343926}
+  rotationSpeed: 100
 --- !u!143 &185343930
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1322,7 +1324,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -1386,7 +1388,7 @@ Transform:
   m_GameObject: {fileID: 185343926}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.114, y: 0.899, z: 1.7677684}
+  m_LocalPosition: {x: 2.114, y: 0, z: 1.7677684}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8630,6 +8632,12 @@ Transform:
   - {fileID: 143022346}
   m_Father: {fileID: 1418419347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1663059582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: db4990a42588dfd4d9ac80762ecef6b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1844554346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1663424771
 GameObject:
   m_ObjectHideFlags: 0
@@ -10022,7 +10030,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: db4990a42588dfd4d9ac80762ecef6b1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 543450651897417092}
   m_SourcePrefab: {fileID: 100100000, guid: db4990a42588dfd4d9ac80762ecef6b1, type: 3}
 --- !u!1 &1847687866
 GameObject:
@@ -11471,6 +11483,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1844554346}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &543450651897417092
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663059582}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6969119962780389931, guid: db4990a42588dfd4d9ac80762ecef6b1, type: 3}
 --- !u!4 &543450652654817014
 Transform:
   m_ObjectHideFlags: 0
