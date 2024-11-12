@@ -2896,6 +2896,7 @@ GameObject:
   - component: {fileID: 7399635059439304143}
   - component: {fileID: 960853564045503149}
   - component: {fileID: 1252074655770958310}
+  - component: {fileID: 8023328039604526750}
   m_Layer: 5
   m_Name: StartMenu
   m_TagString: Untagged
@@ -2912,7 +2913,7 @@ RectTransform:
   m_GameObject: {fileID: 8417292171972838151}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3}
-  m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
+  m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2856953130492765699}
@@ -2989,6 +2990,20 @@ MonoBehaviour:
     m_Bits: 4294967295
   pointer: {fileID: 0}
   sortOrder: 0
+--- !u!114 &8023328039604526750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8417292171972838151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d3e0b85bfbd1a40a288e98f0189bf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 0.15, z: 0.75}
+  smoothAmount: 1
 --- !u!1 &8434130786226121815
 GameObject:
   m_ObjectHideFlags: 0
