@@ -19,9 +19,10 @@ namespace VR_Surgery.Scripts.Core
         public static GameObject currentMenu = null;
         public static GameObject currentMessageMenu = null;
         public static AudioSource audioPlayer = null;
+        public static GameObject modeExecutionObj = null;
 
         // Enum
-        public static OperatingMode PlayMode = OperatingMode.Surgery;
+        public static OperatingMode PlayMode = OperatingMode.Null;
 
     }
 

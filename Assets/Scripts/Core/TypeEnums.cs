@@ -11,7 +11,16 @@ namespace VR_Surgery.Scripts.Core
         public enum OperatingMode
         {
             Surgery,
-            Tranplant
+            Transplant,
+            Null
+        }
+
+        public enum ModePhase
+        {
+            Idle,
+            Cut,
+            Stretch,
+            Lining
         }
     }
 }

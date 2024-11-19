@@ -16,10 +16,10 @@ namespace VR_Surgery.Scripts.Utilities
         {
             if (currentMessageMenu == null)
             {
-                currentMenu.SetActive(false);
+                if(currentMenu != null) { currentMenu.SetActive(false); }
                 GameObject msgMenu = GameObject.Instantiate(Resources.Load(ResourcesPath.UIPrefabFolder + GlobalDefinition.BaseMenu) as GameObject);
-                msgMenu.transform.Find("Panel").Find("BG").Find("Title").GetComponent<TextMeshProUGUI>().text = "Exception Caught !!";
-                msgMenu.transform.Find("Panel").Find("BG").Find("Description").GetComponent<TextMeshProUGUI>().text = message;
+                msgMenu.transform.Find("Panel").Find("Title").GetComponent<TextMeshProUGUI>().text = "Exception Caught !!";
+                msgMenu.transform.Find("Panel").Find("Description").GetComponent<TextMeshProUGUI>().text = message;
                 msgMenu.GetComponentInChildren<PointableUnityEventWrapper>().WhenSelect.AddListener((PointerEvent eventData) =>
                 {
                     currentMenu.SetActive(true);
