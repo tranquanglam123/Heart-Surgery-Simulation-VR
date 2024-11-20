@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Windows;
 using VR_Surgery.Scripts.Movement;
 
 namespace VR_Surgery.Scripts.Manager

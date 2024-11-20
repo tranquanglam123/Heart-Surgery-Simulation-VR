@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using VR_Surgery.Scripts.Core;
 using static VR_Surgery.Scripts.Core.GlobalDefinition;
 using UnityEngine;

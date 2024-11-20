@@ -1,4 +1,3 @@
-using Oculus.Interaction;
 using System.Collections;
 using UnityEngine;
 using VR_Surgery.Scripts.Core;
@@ -11,7 +10,6 @@ namespace VR_Surgery.Scripts.Gameplay
 
     public class ModeExecution : MonoBehaviour
     {
-        GameObject patient;
         Collider hitBox;
         Collider knife;
         Collider stretchTool;
@@ -20,10 +18,9 @@ namespace VR_Surgery.Scripts.Gameplay
         {
             try
             {
-                patient = GameObject.Find("Patient");
-                hitBox = GameObject.Find("HitBox").GetComponent<Collider>();
-                knife = GameObject.Find("Knife").GetComponent<Collider>();
-                stretchTool = GameObject.Find("StretchTool").GetComponent<Collider>();
+                hitBox = patientObj.transform.Find("BodyRaw").GetComponent<Collider>();
+                knife = GameObject.Find("Scissors_T1").GetComponent<Collider>();
+                stretchTool = GameObject.Find("Scissors_T2").GetComponent<Collider>();
             }
             catch (Exception ex) 
             {
@@ -52,9 +49,11 @@ namespace VR_Surgery.Scripts.Gameplay
 
         void SurgeryModeExecution()
         {
-            switch (this.modePhase)
+            switch (this.modePhase) 
             {
                 case ModePhase.Idle:
+                    patientObj.transform.Find("BodyRaw").gameObject.SetActive(true);
+                    patientObj.transform.Find("Body").gameObject.SetActive(false);
                     if (hitBox.bounds.Intersects(knife.bounds))
                     {
                         this.modePhase = ModePhase.Cut;
@@ -84,8 +83,8 @@ namespace VR_Surgery.Scripts.Gameplay
         IEnumerator PhaseExecute()
         {
             yield return new WaitForSeconds(2);
-            patient.GetComponent<Animation>().wrapMode = WrapMode.Clamp;
-            patient.GetComponent<Animation>().Play(this.modePhase.ToString());
+            patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
+            patientObj.GetComponent<Animation>().Play(this.modePhase.ToString());
         }
     }
 }
