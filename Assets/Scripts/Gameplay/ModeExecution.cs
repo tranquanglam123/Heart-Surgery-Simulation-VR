@@ -5,6 +5,9 @@ using static VR_Surgery.Scripts.Core.TypeEnums;
 using static VR_Surgery.Scripts.Core.GlobalDefinition;
 using System;
 using VR_Surgery.Scripts.Utilities;
+using UnityEngine.Rendering;
+using System.Linq;
+using System.Collections.Generic;
 namespace VR_Surgery.Scripts.Gameplay
 {
 
@@ -14,11 +17,13 @@ namespace VR_Surgery.Scripts.Gameplay
         Collider knife;
         Collider stretchTool;
         private ModePhase modePhase = ModePhase.Idle;
+        private List<AnimationClip> animationClips;
+        public ModePhase ModePhase { get { return modePhase; } set { modePhase = value; } }
         private void Awake()
         {
             try
             {
-                hitBox = patientObj.transform.Find("BodyRaw").GetComponent<Collider>();
+                hitBox = patientObj.transform.Find("HitBox").GetComponent<Collider>();
                 knife = GameObject.Find("Scissors_T1").GetComponent<Collider>();
                 stretchTool = GameObject.Find("Scissors_T2").GetComponent<Collider>();
             }
@@ -32,6 +37,7 @@ namespace VR_Surgery.Scripts.Gameplay
             currentMenu.SetActive(false);
             GlobalDefinition.PlayMode = playmode;
             this.modePhase = ModePhase.Idle;
+            animationClips = gameObject.GetComponent<AnimationHelper>().GetAnimationClipsFromImporter(patientObj.GetComponent<Animation>()).ToList();
         }
 
         // Update is called once per frame
@@ -58,20 +64,36 @@ namespace VR_Surgery.Scripts.Gameplay
                     {
                         this.modePhase = ModePhase.Cut;
                     }
+                    StartCoroutine(PhaseExecute());
+#if UNITY_EDITOR
+                    StartCoroutine(EditorTest(ModePhase.Cut));
+#endif
                     break;
                 case ModePhase.Cut:
+                    patientObj.transform.Find("BodyRaw").gameObject.SetActive(false);
+                    patientObj.transform.Find("Body").gameObject.SetActive(true);
                     StartCoroutine(PhaseExecute());
+                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
                     if (hitBox.bounds.Intersects(stretchTool.bounds))
                     {
                         this.modePhase = ModePhase.Stretch;
                     }
+#if UNITY_EDITOR
+                   StartCoroutine(EditorTest(ModePhase.Stretch)); 
+#endif
                     break;
                 case ModePhase.Stretch:
                     StartCoroutine(PhaseExecute());
-                    // If the user touch the lining -> 
-                    // this.modePhase = ModePhase.Lining;
+                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
+#if UNITY_EDITOR
+                    StartCoroutine(EditorTest(ModePhase.Lining));
+#endif
+
                     break;
                 case ModePhase.Lining:
+                    patientObj.transform.Find("Lining").gameObject.SetActive(true);
+                    StartCoroutine(PhaseExecute());
+                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.Loop;
                     break;
             }
 
@@ -82,9 +104,15 @@ namespace VR_Surgery.Scripts.Gameplay
         }
         IEnumerator PhaseExecute()
         {
-            yield return new WaitForSeconds(2);
-            patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
-            patientObj.GetComponent<Animation>().Play(this.modePhase.ToString());
+            yield return null; ;
+            patientObj.GetComponent<Animation>().clip = animationClips.Find(x => x.name == modePhase.ToString());
+            patientObj.GetComponent<Animation>().Play();
+        }
+
+        IEnumerator EditorTest(ModePhase mode)
+        {
+            yield return new WaitForSeconds(patientObj.GetComponent<Animation>().clip.length + 2f);
+            modePhase = mode;
         }
     }
 }
