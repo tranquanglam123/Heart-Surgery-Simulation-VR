@@ -18,6 +18,7 @@ namespace VR_Surgery.Scripts.Core
         public static AudioSource audioPlayer = null;
         public static GameObject modeExecutionObj = null;
         public static GameObject patientObj = null;
+        public static GameObject heartObj = null;
 
         // Enum
         public static OperatingMode PlayMode = OperatingMode.Null;

@@ -64,18 +64,11 @@ namespace VR_Surgery.Scripts.Manager
                     });
                 });
 
-                patientObj = GameObject.Find("PatientAllStep").gameObject;
-                //patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
-                //patientObj.GetComponent<Animation>().Play();    
-                patientObj.transform.Find("BodyRaw").gameObject.SetActive(true);
-                patientObj.transform.Find("Body").gameObject.SetActive(false);
-                patientObj.transform.Find("Lining").gameObject.SetActive(false);
-                // Play Mode Handling
                 modeExecutionObj = new GameObject("ModeExecution");
                 modeExecutionObj.AddComponent<ModeExecution>();
                 modeExecutionObj.AddComponent<AnimationHelper>();
 #if UNITY_EDITOR
-                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Surgery);
+                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Transplant);
 #endif
             }
             catch (Exception e)
@@ -87,32 +80,12 @@ namespace VR_Surgery.Scripts.Manager
 
 
 
-        private void Update()
-        {
-
-
-        }
-
         IEnumerator DelayAction(UnityAction callback)
         {
             yield return new WaitForSeconds(2F);
             callback();
         }
 
-        //IEnumerator TestAnimation(GameObject animationComponent)
-        //{
-        //    yield return new WaitForSeconds(5F);
-        //    Debug.Log("Changing state");
-        //    modeExecutionObj.GetComponent<ModeExecution>().ModePhase = ModePhase.Cut;
-        //    yield return new WaitForSeconds(patient);
-        //    modeExecutionObj.GetComponent<ModeExecution>().ModePhase = ModePhase.Stretch;
-        //    //animationComponent.GetComponent<Animation>().Stop();
-        //    //animationComponent.transform.Find("BodyRaw").gameObject.SetActive(false);
-        //    //animationComponent.transform.Find("Body").gameObject.SetActive(true);
-        //    //animationComponent.GetComponent<Animation>().Play(ModePhase.Cut.ToString());
-        //    //yield return new WaitForSeconds(animationComponent.GetComponent<Animation>().clip.length + 1f);
-        //    //animationComponent.GetComponent<Animation>().Play(ModePhase.Stretch.ToString());
-        //}
-
+        
     }
 }

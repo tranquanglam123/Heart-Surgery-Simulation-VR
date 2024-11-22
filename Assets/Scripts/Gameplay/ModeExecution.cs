@@ -19,11 +19,13 @@ namespace VR_Surgery.Scripts.Gameplay
         private ModePhase modePhase = ModePhase.Idle;
         private List<AnimationClip> animationClips;
         public ModePhase ModePhase { get { return modePhase; } set { modePhase = value; } }
+
+        private Coroutine currentCoroutine;
         private void Awake()
         {
             try
             {
-                hitBox = patientObj.transform.Find("HitBox").GetComponent<Collider>();
+                hitBox = GameObject.Find("HitBox").GetComponent<Collider>();
                 knife = GameObject.Find("Scissors_T1").GetComponent<Collider>();
                 stretchTool = GameObject.Find("Scissors_T2").GetComponent<Collider>();
             }
@@ -37,7 +39,24 @@ namespace VR_Surgery.Scripts.Gameplay
             currentMenu.SetActive(false);
             GlobalDefinition.PlayMode = playmode;
             this.modePhase = ModePhase.Idle;
-            animationClips = gameObject.GetComponent<AnimationHelper>().GetAnimationClipsFromImporter(patientObj.GetComponent<Animation>()).ToList();
+            patientObj = GameObject.Find("Cut").gameObject;
+            patientObj.SetActive(true);
+            patientObj.GetComponent<Animation>().Stop();
+            switch (playmode)
+            {
+                case OperatingMode.Transplant:
+                    heartObj = GameObject.Find("heart-and-lung-animation");
+                    heartObj.GetComponent<Animation>().wrapMode = WrapMode.Loop;
+                    heartObj.GetComponent<Animation>().Play();
+                    break;
+                case OperatingMode.Surgery:
+                    heartObj = GameObject.Find("heart-and-lung-animation");
+                    heartObj.SetActive(false);
+                    break;
+
+            }
+
+            //animationClips = gameObject.GetComponent<AnimationHelper>().GetAnimationClipsFromImporter(patientObj.GetComponent<Animation>()).ToList();
         }
 
         // Update is called once per frame
@@ -58,61 +77,70 @@ namespace VR_Surgery.Scripts.Gameplay
             switch (this.modePhase) 
             {
                 case ModePhase.Idle:
-                    patientObj.transform.Find("BodyRaw").gameObject.SetActive(true);
-                    patientObj.transform.Find("Body").gameObject.SetActive(false);
-                    if (hitBox.bounds.Intersects(knife.bounds))
+                    if (knife.bounds.Intersects(hitBox.bounds))
                     {
                         this.modePhase = ModePhase.Cut;
                     }
-                    StartCoroutine(PhaseExecute());
-#if UNITY_EDITOR
-                    StartCoroutine(EditorTest(ModePhase.Cut));
-#endif
                     break;
                 case ModePhase.Cut:
-                    patientObj.transform.Find("BodyRaw").gameObject.SetActive(false);
-                    patientObj.transform.Find("Body").gameObject.SetActive(true);
-                    StartCoroutine(PhaseExecute());
-                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
-                    if (hitBox.bounds.Intersects(stretchTool.bounds))
+                    currentCoroutine ??= StartCoroutine(PhaseExecute(WrapMode.ClampForever));
+                    if (stretchTool.bounds.Intersects(hitBox.bounds))
                     {
                         this.modePhase = ModePhase.Stretch;
                     }
-#if UNITY_EDITOR
-                   StartCoroutine(EditorTest(ModePhase.Stretch)); 
-#endif
                     break;
                 case ModePhase.Stretch:
-                    StartCoroutine(PhaseExecute());
-                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
-#if UNITY_EDITOR
-                    StartCoroutine(EditorTest(ModePhase.Lining));
-#endif
-
+                    Debug.Log("Moved to StretchPhase");
+                    if (knife.bounds.Intersects(hitBox.bounds))
+                    {
+                        this.modePhase = ModePhase.Lining;
+                    }
                     break;
                 case ModePhase.Lining:
-                    patientObj.transform.Find("Lining").gameObject.SetActive(true);
-                    StartCoroutine(PhaseExecute());
-                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.Loop;
+                    Debug.Log("Moved to Lining");
+
                     break;
             }
 
         }
         void TransplantModeExecution()
         {
+            switch (this.modePhase)
+            {
+                case ModePhase.Idle:
+                    
+                    if (knife.bounds.Intersects(hitBox.bounds))
+                    {
+                        this.modePhase = ModePhase.Cut;
+                    }
+                    break;
+                case ModePhase.Cut:
+                    currentCoroutine ??= StartCoroutine(PhaseExecute(WrapMode.ClampForever));
+                    if (stretchTool.bounds.Intersects(hitBox.bounds))
+                    {
+                        this.modePhase = ModePhase.Stretch;
+                    }
+                    break;
+                case ModePhase.Stretch:
+                    Debug.Log("Moved to StretchPhase");
+                    if (knife.bounds.Intersects(hitBox.bounds))
+                    {
+                        this.modePhase = ModePhase.Lining;
+                    }
+                    break;
+                case ModePhase.Lining:
+                    Debug.Log("Moved to Lining");
 
+                    break;
+            }
+            
         }
-        IEnumerator PhaseExecute()
+        
+        IEnumerator PhaseExecute(WrapMode animationWrapMode)
         {
-            yield return null; ;
-            patientObj.GetComponent<Animation>().clip = animationClips.Find(x => x.name == modePhase.ToString());
+            yield return new WaitForSeconds(1f);
+            patientObj.GetComponent<Animation>().wrapMode = animationWrapMode;
             patientObj.GetComponent<Animation>().Play();
-        }
-
-        IEnumerator EditorTest(ModePhase mode)
-        {
-            yield return new WaitForSeconds(patientObj.GetComponent<Animation>().clip.length + 2f);
-            modePhase = mode;
         }
     }
 }
