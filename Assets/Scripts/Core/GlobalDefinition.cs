@@ -10,7 +10,8 @@ namespace VR_Surgery.Scripts.Core
         public static string ModeMenu = "ModeMenu";
         public static string BaseMenu = "BaseMenu";
         public static string BackgroundMusic = "BackgroundMusic";
-        public static string PatientPrefab = "PatientAllStep.fbx";
+        public static string PatientPrefab = "AllAnimation.fbx";
+        public static string CutAnimPrefab = "Cut.fbx";
 
         // static Game Object in scene
         public static GameObject currentMenu = null;

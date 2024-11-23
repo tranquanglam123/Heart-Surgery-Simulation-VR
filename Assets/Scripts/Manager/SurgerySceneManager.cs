@@ -68,7 +68,7 @@ namespace VR_Surgery.Scripts.Manager
                 modeExecutionObj.AddComponent<ModeExecution>();
                 modeExecutionObj.AddComponent<AnimationHelper>();
 #if UNITY_EDITOR
-                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Transplant);
+                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Surgery);
 #endif
             }
             catch (Exception e)

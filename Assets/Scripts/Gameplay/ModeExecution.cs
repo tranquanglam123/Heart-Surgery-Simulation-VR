@@ -16,6 +16,7 @@ namespace VR_Surgery.Scripts.Gameplay
         Collider hitBox;
         Collider knife;
         Collider stretchTool;
+        private Vector3 spawnPos = new Vector3(0.0710000172f, -0.498999953f, -0.681000054f);
         private ModePhase modePhase = ModePhase.Idle;
         private List<AnimationClip> animationClips;
         public ModePhase ModePhase { get { return modePhase; } set { modePhase = value; } }
@@ -39,12 +40,14 @@ namespace VR_Surgery.Scripts.Gameplay
             currentMenu.SetActive(false);
             GlobalDefinition.PlayMode = playmode;
             this.modePhase = ModePhase.Idle;
-            patientObj = GameObject.Find("Cut").gameObject;
-            patientObj.SetActive(true);
-            patientObj.GetComponent<Animation>().Stop();
+            patientObj = GameObject.Find("AllAnimation").gameObject;
+            patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
+            patientObj.GetComponent<Animation>().Play();
+            animationClips = gameObject.GetComponent<AnimationHelper>().GetAnimationClipsFromImporter(patientObj.GetComponent<Animation>()).ToList();
             switch (playmode)
             {
                 case OperatingMode.Transplant:
+                    GameObject.Find("Cut").SetActive(false);
                     heartObj = GameObject.Find("heart-and-lung-animation");
                     heartObj.GetComponent<Animation>().wrapMode = WrapMode.Loop;
                     heartObj.GetComponent<Animation>().Play();
@@ -55,8 +58,6 @@ namespace VR_Surgery.Scripts.Gameplay
                     break;
 
             }
-
-            //animationClips = gameObject.GetComponent<AnimationHelper>().GetAnimationClipsFromImporter(patientObj.GetComponent<Animation>()).ToList();
         }
 
         // Update is called once per frame
@@ -108,25 +109,15 @@ namespace VR_Surgery.Scripts.Gameplay
             switch (this.modePhase)
             {
                 case ModePhase.Idle:
-                    
-                    if (knife.bounds.Intersects(hitBox.bounds))
-                    {
-                        this.modePhase = ModePhase.Cut;
-                    }
+
+                    patientObj.GetComponent<Animation>().clip = animationClips.ToList().Find(x => x.name == "Lining");
+                    patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
+                    patientObj.GetComponent<Animation>().Play();
+                    this.modePhase = ModePhase.Cut;
                     break;
                 case ModePhase.Cut:
-                    currentCoroutine ??= StartCoroutine(PhaseExecute(WrapMode.ClampForever));
-                    if (stretchTool.bounds.Intersects(hitBox.bounds))
-                    {
-                        this.modePhase = ModePhase.Stretch;
-                    }
                     break;
                 case ModePhase.Stretch:
-                    Debug.Log("Moved to StretchPhase");
-                    if (knife.bounds.Intersects(hitBox.bounds))
-                    {
-                        this.modePhase = ModePhase.Lining;
-                    }
                     break;
                 case ModePhase.Lining:
                     Debug.Log("Moved to Lining");
@@ -140,8 +131,11 @@ namespace VR_Surgery.Scripts.Gameplay
         {
             yield return new WaitForSeconds(1f);
             patientObj.GetComponent<Animation>().wrapMode = animationWrapMode;
+            patientObj.GetComponent<Animation>().clip = animationClips.ToList().Find(x => x.name == modePhase.ToString());
             patientObj.GetComponent<Animation>().Play();
         }
+
+        
     }
 }
 
