@@ -16,6 +16,7 @@ namespace VR_Surgery.Scripts.Gameplay
         Collider hitBox;
         Collider knife;
         Collider stretchTool;
+        Collider stretchTool2nd;
         private Vector3 spawnPos = new Vector3(0.0710000172f, -0.498999953f, -0.681000054f);
         private ModePhase modePhase = ModePhase.Idle;
         private List<AnimationClip> animationClips;
@@ -27,8 +28,9 @@ namespace VR_Surgery.Scripts.Gameplay
             try
             {
                 hitBox = GameObject.Find("HitBox").GetComponent<Collider>();
-                knife = GameObject.Find("Scissors_T1").GetComponent<Collider>();
-                stretchTool = GameObject.Find("Scissors_T2").GetComponent<Collider>();
+                knife = GameObject.Find("Knife").GetComponent<Collider>();
+                stretchTool = GameObject.Find("StretchTool").GetComponent<Collider>();
+                stretchTool2nd = GameObject.Find("StretchTool2nd").GetComponent<Collider>();
             }
             catch (Exception ex) 
             {
@@ -87,13 +89,16 @@ namespace VR_Surgery.Scripts.Gameplay
                     currentCoroutine ??= StartCoroutine(PhaseExecute(WrapMode.ClampForever));
                     if (stretchTool.bounds.Intersects(hitBox.bounds))
                     {
+                        StopCurrentCoroutine();
                         this.modePhase = ModePhase.Stretch;
+                        Debug.Log("Touched Stretch Tool");
                     }
                     break;
                 case ModePhase.Stretch:
-                    Debug.Log("Moved to StretchPhase");
+                    currentCoroutine ??= StartCoroutine(PhaseExecute(WrapMode.ClampForever));
                     if (knife.bounds.Intersects(hitBox.bounds))
                     {
+                        StopCurrentCoroutine();
                         this.modePhase = ModePhase.Lining;
                     }
                     break;
@@ -135,7 +140,14 @@ namespace VR_Surgery.Scripts.Gameplay
             patientObj.GetComponent<Animation>().Play();
         }
 
-        
+        private void StopCurrentCoroutine()
+        {
+            if (currentCoroutine != null)
+            {
+                StopCoroutine(currentCoroutine);
+                currentCoroutine = null;
+            }
+        }
     }
 }
 
