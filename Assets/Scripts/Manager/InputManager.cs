@@ -1,5 +1,6 @@
 using UnityEngine;
 using VR_Surgery.Scripts.Movement;
+using static VR_Surgery.Scripts.Core.GlobalDefinition;
 
 namespace VR_Surgery.Scripts.Manager
 {
@@ -38,6 +39,10 @@ namespace VR_Surgery.Scripts.Manager
         private void FixedUpdate()
         {
             GetInput();
+            if(OVRInput.Get(OVRInput.Button.Start, OVRInput.Controller.LTouch))
+            {
+                currentMenu.SetActive(!currentMenu.activeSelf);
+            }
         }
 
         private void Update()

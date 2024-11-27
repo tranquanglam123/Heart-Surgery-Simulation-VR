@@ -20,7 +20,10 @@ namespace VR_Surgery.Scripts.Core
             Idle,
             Cut,
             Stretch,
-            Lining
+            Lining,
+            TransplantIdle,
+            HeartOut,
+            HeartIn
         }
     }
 }

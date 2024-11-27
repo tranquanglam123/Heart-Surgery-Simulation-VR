@@ -68,15 +68,15 @@ namespace VR_Surgery.Scripts.Manager
                 modeExecutionObj.AddComponent<ModeExecution>();
                 modeExecutionObj.AddComponent<AnimationHelper>();
 #if UNITY_EDITOR
-                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Surgery);
+                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Transplant);
 #endif
-            }
+        }
             catch (Exception e)
             {
                 currentMessageMenu = Helper.CreateMessageMenu(e.Message);
             }
 
-        }
+}
 
 
 
