@@ -28,14 +28,7 @@ namespace VR_Surgery.Scripts.Manager
 
         private Vector2 DIR;
         private Vector2 forwardMovement;
-        //private PlayerMov playerMovement;
-        //private PlayerLook playerLook;
-
-        private void Start()
-        {
-            //    playerMovement = FindAnyObjectByType<PlayerMov>();
-            //    playerLook = FindAnyObjectByType<PlayerLook>();
-        }
+        
         private void FixedUpdate()
         {
             GetInput();
@@ -43,10 +36,6 @@ namespace VR_Surgery.Scripts.Manager
             {
                 currentMenu.SetActive(!currentMenu.activeSelf);
             }
-        }
-
-        private void Update()
-        {
         }
 
         private void GetInput()

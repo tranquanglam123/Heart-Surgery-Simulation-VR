@@ -19,7 +19,6 @@ namespace VR_Surgery.Scripts.Movement
         private float Speed = 10.0f;
         private float timeCount = 0.0f;
         public float rotationSpeed = 100f;
-        //private bool isRotating = false;
 
         private GameObject MainCamera;
 
@@ -28,7 +27,6 @@ namespace VR_Surgery.Scripts.Movement
 
         void Awake()
         {
-
             motor = GetComponent<PlayerMov>();
             look = GetComponent<PlayerLook>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -37,10 +35,7 @@ namespace VR_Surgery.Scripts.Movement
         // Update is called once per frame
         void FixedUpdate()
         {
-
             motor.PlayerMovement(getVector2, DIR);
-
-
         }
 
 

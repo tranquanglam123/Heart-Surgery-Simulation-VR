@@ -1,4 +1,3 @@
-
 namespace VR_Surgery.Scripts.Core
 {
     /// <summary>

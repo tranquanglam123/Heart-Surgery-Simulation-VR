@@ -14,7 +14,6 @@ namespace VR_Surgery.Scripts.Manager
     {
         public GameObject spawnHolder;
         public GameObject spawnPrefab;
-        private Vector3 spawnPos = new Vector3(0.1906184f, 1.373776f, 0.6312699f);
         void Start()
         {
             InitValue();
@@ -68,7 +67,7 @@ namespace VR_Surgery.Scripts.Manager
                 modeExecutionObj.AddComponent<ModeExecution>();
                 modeExecutionObj.AddComponent<AnimationHelper>();
 #if UNITY_EDITOR
-                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Transplant);
+                modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Surgery);
 #endif
         }
             catch (Exception e)
@@ -77,8 +76,6 @@ namespace VR_Surgery.Scripts.Manager
             }
 
 }
-
-
 
         IEnumerator DelayAction(UnityAction callback)
         {

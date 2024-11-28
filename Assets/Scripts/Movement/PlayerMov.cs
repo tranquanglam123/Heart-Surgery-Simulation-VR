@@ -22,8 +22,6 @@ namespace VR_Surgery.Scripts.Movement
         public float gravity = -9.8f;
         public float jumpHeight = 3f;
 
-
-        // Start is called before the first frame update
         void Start()
         {
             playerController = GetComponent<CharacterController>();
@@ -32,8 +30,6 @@ namespace VR_Surgery.Scripts.Movement
         void Update()
         {
             in_Grounded = playerController.isGrounded;
-            //Debug.Log(playerVelocity.y);
-
         }
         public void PlayerMovement(Vector2 input, Vector2 rotation)
         {
