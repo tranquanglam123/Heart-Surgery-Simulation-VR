@@ -19,7 +19,7 @@ namespace VR_Surgery.Scripts.Movement
             Debug.Log(" x = " + input);
             float mouseX = input.x;
             float mouseY = input.y;
-            xRotation -= (mouseY * Time.deltaTime) * ySensitivity;
+            xRotation = (mouseY * Time.deltaTime) * ySensitivity;
             xRotation = Mathf.Clamp(xRotation, -80f, 80f);
             transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
         }

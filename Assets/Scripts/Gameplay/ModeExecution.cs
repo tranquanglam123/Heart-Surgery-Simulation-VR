@@ -17,10 +17,11 @@ namespace VR_Surgery.Scripts.Gameplay
     /// </summary>
     public class ModeExecution : MonoBehaviour
     {
-        Collider hitBox;
-        Collider knife;
-        Collider stretchTool;
-        Collider stretchTool2nd;
+        Collider hitBox; Transform hitboxTrans;
+        Collider knife;  Transform knifeTrans;
+        Collider stretchTool; Transform stretchToolTrans;
+        Collider stretchTool2nd;    Transform stretchTool2ndTrans;
+        Transform transplantHeartTransform;
         private ModePhase modePhase = ModePhase.Idle;
         public ModePhase ModePhase { get { return modePhase; } set { modePhase = value; } }
 
@@ -29,10 +30,20 @@ namespace VR_Surgery.Scripts.Gameplay
         {
             try
             {
+                patientHeartObj = GameObject.Find(PatientHeartObjName);
+                patientHeartOldObj = GameObject.Find(PatientHeartOldObjName);
+                patientObj = GameObject.Find(PatientObjName).gameObject;
                 hitBox = GameObject.Find(HitBox).GetComponent<Collider>();
+                hitboxTrans = hitBox.transform;
                 knife = GameObject.Find(Knife).GetComponent<Collider>();
+                knifeTrans = knife.transform;
                 stretchTool = GameObject.Find(StretchTool).GetComponent<Collider>();
+                stretchToolTrans = stretchTool.transform;
                 stretchTool2nd = GameObject.Find(StretchTool2nd).GetComponent<Collider>();
+                stretchTool2ndTrans = stretchTool2nd.transform;
+                heartObj = GameObject.Find(TransplantHeartObjName);
+                transplantHeartTransform = GameObject.Find(TransplantHeartObjName).transform;
+
             }
             catch (Exception ex) 
             {
@@ -41,14 +52,14 @@ namespace VR_Surgery.Scripts.Gameplay
         }
         public void InitPlayMode(OperatingMode playmode)
         {
+            if(GlobalDefinition.PlayMode != OperatingMode.Null) {RelocateAllTools(); }
             currentMenu.SetActive(false);
             Tool1InPos = false;
             Tool2InPos = false;
             GlobalDefinition.PlayMode = playmode;
-            patientObj = GameObject.Find(PatientObjName).gameObject;
             patientObj.GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
             patientObj.GetComponent<Animation>().Play();
-            heartObj = GameObject.Find(TransplantHeartObjName);
+            heartObj.SetActive(true);
             heartObj.GetComponent<Animation>().wrapMode = WrapMode.Loop;
             heartObj.GetComponent<Animation>().Play();
 
@@ -57,16 +68,30 @@ namespace VR_Surgery.Scripts.Gameplay
             {
                 case OperatingMode.Transplant:
                     this.modePhase = ModePhase.TransplantIdle;
-                    GameObject.Find(PatientHeartObjName).SetActive(false);
-                    patientHeartObj = GameObject.Find(PatientHeartOldObjName);
+                    patientHeartObj.SetActive(false);
+                    patientHeartOldObj.SetActive(true);
+                    heartObj.SetActive(true);
                     break;
                 case OperatingMode.Surgery:
                     this.modePhase = ModePhase.Idle;
+                    patientHeartObj.SetActive(true);
                     heartObj.SetActive(false);
-                    GameObject.Find(PatientHeartOldObjName).SetActive(false);
+                    patientHeartOldObj.SetActive(false);
                     break;
 
             }
+        }
+
+        private void RelocateAllTools()
+        {
+            //patientHeartObj.SetActive(true);
+            //patientHeartOldObj.SetActive(true);
+            //heartObj.SetActive(true);
+            hitBox.transform.SetLocalPositionAndRotation(hitboxTrans.position, hitboxTrans.rotation);
+            knife.transform.SetLocalPositionAndRotation(knifeTrans.position, knifeTrans.rotation);
+            stretchTool.transform.SetLocalPositionAndRotation(stretchToolTrans.position, stretchToolTrans.rotation);
+            stretchTool2nd.transform.SetLocalPositionAndRotation(stretchTool2ndTrans.position, stretchTool2ndTrans.rotation);
+            heartObj.transform.SetLocalPositionAndRotation(transplantHeartTransform.position, transplantHeartTransform.rotation);
         }
 
         // Update is called once per frame

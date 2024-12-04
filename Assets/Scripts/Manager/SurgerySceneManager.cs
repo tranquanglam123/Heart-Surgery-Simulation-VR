@@ -23,6 +23,7 @@ namespace VR_Surgery.Scripts.Manager
         {
             try
             {
+                GlobalDefinition.PlayMode = OperatingMode.Null;
 
                 // Audio Player
                 audioPlayer = new GameObject("BackgroundMusic").AddComponent<AudioSource>();
@@ -51,15 +52,15 @@ namespace VR_Surgery.Scripts.Manager
                         //GlobalDefinition.PlayMode = TypeEnums.OperatingMode.Surgery;
                         modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Surgery);
                         // Debug
-                        Helper.CreateMessageMenu($"Play mode set to {GlobalDefinition.PlayMode}");
+                        //Helper.CreateMessageMenu($"Play mode set to {GlobalDefinition.PlayMode}");
                     });
-                    var TransplantWrapper = currentMenu.transform.Find("Transplant").GetComponentInChildren<PointableUnityEventWrapper>();
+                    var TransplantWrapper = currentMenu.transform.Find("TransplantMode").GetComponentInChildren<PointableUnityEventWrapper>();
                     TransplantWrapper.WhenSelect.AddListener((PointerEvent data) =>
                     {
                         GlobalDefinition.PlayMode = TypeEnums.OperatingMode.Transplant;
                         modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Transplant);
                         //Debug
-                        Helper.CreateMessageMenu($"Play mode set to {GlobalDefinition.PlayMode}");
+                        //Helper.CreateMessageMenu($"Play mode set to {GlobalDefinition.PlayMode}");
                     });
                 });
 
@@ -69,7 +70,7 @@ namespace VR_Surgery.Scripts.Manager
 #if UNITY_EDITOR
                 modeExecutionObj.GetComponent<ModeExecution>().InitPlayMode(OperatingMode.Surgery);
 #endif
-        }
+            }
             catch (Exception e)
             {
                 currentMessageMenu = Helper.CreateMessageMenu(e.Message);
