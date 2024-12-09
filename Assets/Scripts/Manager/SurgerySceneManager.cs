@@ -10,15 +10,29 @@ using static VR_Surgery.Scripts.Core.GlobalDefinition;
 using static VR_Surgery.Scripts.Core.TypeEnums;
 namespace VR_Surgery.Scripts.Manager
 {
+    /// <summary>
+    /// Main script to run the application
+    /// Manage the initial process of the whole application
+    /// </summary>
     public class SurgerySceneManager : MonoBehaviour
     {
+        [Tooltip ("Parent Object for spawn")]
         public GameObject spawnHolder;
+        [Tooltip("The Spawn object prefab")]
         public GameObject spawnPrefab;
+
+        /// <summary>
+        /// Once the application start running, this function will
+        /// be automatically called
+        /// </summary>
         void Start()
         {
             InitValue();
         }
 
+        /// <summary>
+        /// Assign the default values for the application
+        /// </summary>
         void InitValue()
         {
             try
@@ -77,7 +91,11 @@ namespace VR_Surgery.Scripts.Manager
             }
 
 }
-
+        /// <summary>
+        /// Ultilities to delay an action
+        /// </summary>
+        /// <param name="callback"> The action needs to be delayed</param>
+        /// <returns></returns>
         IEnumerator DelayAction(UnityAction callback)
         {
             yield return new WaitForSeconds(2F);

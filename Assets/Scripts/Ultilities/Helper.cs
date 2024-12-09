@@ -5,6 +5,9 @@ using TMPro;
 using Oculus.Interaction;
 namespace VR_Surgery.Scripts.Utilities
 {
+    /// <summary>
+    /// Ultilities to support the application
+    /// </summary>
     public static class Helper
     {
         /// <summary>
@@ -38,6 +41,10 @@ namespace VR_Surgery.Scripts.Utilities
             }
         }
         
+        /// <summary>
+        /// Generate the menu 
+        /// </summary>
+        /// <param name="menuName"></param>
         public static void CreateMenu(string menuName)
         {
             if (currentMenu != null)

@@ -13,7 +13,8 @@ using Oculus.Interaction;
 namespace VR_Surgery.Scripts.Gameplay
 {
     /// <summary>
-    /// Handle the progess of modes
+    /// Backbone of the aplpication
+    /// Handle the progess of modes continuously
     /// </summary>
     public class ModeExecution : MonoBehaviour
     {
@@ -22,10 +23,16 @@ namespace VR_Surgery.Scripts.Gameplay
         Collider stretchTool; Transform stretchToolTrans;
         Collider stretchTool2nd;    Transform stretchTool2ndTrans;
         Transform transplantHeartTransform;
+
         private ModePhase modePhase = ModePhase.Idle;
         public ModePhase ModePhase { get { return modePhase; } set { modePhase = value; } }
 
         private Coroutine currentCoroutine;
+
+        /// <summary>
+        /// Automatically called once app start
+        /// Get default values, components of interactive obejects in the 2 modes
+        /// </summary>
         private void Awake()
         {
             try
@@ -50,6 +57,11 @@ namespace VR_Surgery.Scripts.Gameplay
                 Helper.CreateMessageMenu(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Initialize the process of a mode
+        /// </summary>
+        /// <param name="playmode"> Transplant or Surgery</param>
         public void InitPlayMode(OperatingMode playmode)
         {
             if(GlobalDefinition.PlayMode != OperatingMode.Null) {RelocateAllTools(); }
@@ -82,6 +94,10 @@ namespace VR_Surgery.Scripts.Gameplay
             }
         }
 
+        /// <summary>
+        /// Reset all surgical tools, all process
+        /// to default/ initial transforms
+        /// </summary>
         private void RelocateAllTools()
         {
             //patientHeartObj.SetActive(true);
@@ -204,6 +220,9 @@ namespace VR_Surgery.Scripts.Gameplay
             }
         }
 
+        /// <summary>
+        /// Stop the current coroutine to move on next phase
+        /// </summary>
         private void StopCurrentCoroutine()
         {
             if (currentCoroutine != null)

@@ -4,6 +4,9 @@ using UnityEngine;
 using static VR_Surgery.Scripts.Core.TypeEnums;
 namespace VR_Surgery.Scripts.Core
 {
+    /// <summary>
+    /// File contains constant values to use throughout the application
+    /// </summary>
     public static class GlobalDefinition
     {
         //Prefabs name
